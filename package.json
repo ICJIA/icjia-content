@@ -3,14 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "kill-port 8080 && npm run scripts && vue-cli-service serve",
+    "build": "npm run scripts && vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "generate:schema": "get-graphql-schema https://agency.icjia-api.cloud/graphql -j > schema.json",
+    "scripts": "npm run generate:schema"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "get-graphql-schema": "^2.1.2",
+    "graphql": "^15.6.0",
+    "graphql-request": "^3.5.0",
+    "regenerator-runtime": "^0.13.9",
     "vue": "^2.6.14",
+    "vue-apollo": "3.0.8",
     "vue-router": "^3.5.1",
+    "vuetify": "^2.6.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -25,7 +33,13 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "graphql-tag": "^2.12.5",
     "prettier": "^2.4.1",
-    "vue-template-compiler": "^2.6.14"
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-apollo": "^0.22.2",
+    "vue-cli-plugin-vuetify": "^2.5.2",
+    "vue-template-compiler": "^2.6.14",
+    "vuetify-loader": "^1.7.0"
   }
 }
