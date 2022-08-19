@@ -4,15 +4,15 @@
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
-          class="shrink mr-2"
+          class="shrink mr-5"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="https://icjia.illinois.gov/icjia-logo.png"
           transition="scale-transition"
-          width="40"
+          width="70"
         />
 
-        <div style="font: 68px; color: #000; font-weight: 900">
-          ICJIA Web Content Status
+        <div style="font-size: 28px; color: #000; font-weight: 700">
+          Web Content Status
         </div>
       </div>
 
