@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <div>
     <v-row>
@@ -17,6 +18,10 @@
             <div class="text-center mt-5 mb-8">
               <v-btn v-on:click="download()">Download CSV</v-btn>
             </div>
+            <div style="font-size: 12px" class="text-right mb-2 mx-5">
+              <span>Total items: </span>
+              <span style="font-weight: 900">{{ content.length }}</span>
+            </div>
             <v-card class="elevation-5">
               <v-card-title class="elevation-5">
                 <v-text-field
@@ -27,6 +32,7 @@
                   hide-details
                 ></v-text-field>
               </v-card-title>
+
               <v-data-table
                 dense
                 :search="search"
@@ -41,7 +47,32 @@
                 }"
                 :items-per-page="500"
                 id="contentTable"
-              ></v-data-table>
+              >
+                <template v-slot:item.readableDate="{ item }">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 400;
+                      width: 210px;
+                      color: #555;
+                    "
+                  >
+                    {{ item.readableDate }}
+                  </div>
+                </template>
+                <template v-slot:item.title="{ item }">
+                  <div style="font-size: 14px; font-weight: 700; color: #555">
+                    {{ item.title }}
+                  </div>
+                </template>
+                <template v-slot:item.fullPath="{ item }">
+                  <div style="font-size: 14px; color: #555">
+                    <a target="_blank" :href="item.fullPath">{{
+                      item.fullPath
+                    }}</a>
+                  </div>
+                </template>
+              </v-data-table>
             </v-card>
           </div>
           <div v-else>
@@ -71,6 +102,7 @@ import NProgress from "nprogress";
 // eslint-disable-next-line no-unused-vars
 import { v4 as uuidv4 } from "uuid";
 import { GET_CONTENT_QUERY } from "@/graphql/content";
+let FileSaver = require("file-saver");
 import _ from "lodash";
 // eslint-disable-next-line no-unused-vars
 import { EventBus } from "@/event-bus";
@@ -115,6 +147,14 @@ export default {
             .join(",")
         ),
       ].join("\r\n");
+
+      try {
+        let blob = new Blob([csv], { type: "text/plain;charset=utf-8" });
+        FileSaver.saveAs(blob, "ICJIAWebContent.csv");
+        console.log("csv saved");
+      } catch (e) {
+        console.log("csv error");
+      }
 
       console.log(csv);
       //download csv file
@@ -170,7 +210,7 @@ export default {
                 obj.contentType = "biographies";
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
-                  "biographies" +
+                  "about/biographies" +
                   "/" +
                   item.slug;
                 obj.readableDate = window
