@@ -5,8 +5,10 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { createProvider } from "./vue-apollo";
+import nprogress from "nprogress";
 
 Vue.config.productionTip = false;
+nprogress.start();
 
 new Vue({
   router,
@@ -15,3 +17,4 @@ new Vue({
   apolloProvider: createProvider(),
   render: (h) => h(App),
 }).$mount("#app");
+nprogress.done();
