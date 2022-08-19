@@ -21,6 +21,9 @@
             <div class="text-center mt-5 mb-8">
               <v-btn v-on:click="download()"
                 >Download CSV<v-icon right>file_download</v-icon></v-btn
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <v-btn v-on:click="downloadJSON()"
+                >Download JSON<v-icon right>file_download</v-icon></v-btn
               >
             </div>
             <div style="font-size: 12px" class="text-right mb-2 mx-5">
@@ -163,6 +166,19 @@ export default {
 
       console.log(csv);
       //download csv file
+    },
+    downloadJSON() {
+      let now = window.dayjs().format("YYYY-MM-DD_HH-mm-ss");
+      try {
+        let json = JSON.stringify(this.content);
+        let blob = new Blob([json], {
+          type: "text/plain;charset=utf-8",
+        });
+        FileSaver.saveAs(blob, "ICJIAWebContent-" + now + ".json");
+        console.log("json saved");
+      } catch (e) {
+        console.log("json error");
+      }
     },
   },
   apollo: {
