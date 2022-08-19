@@ -16,7 +16,9 @@
           </div>
           <div v-if="content">
             <div class="text-center mt-5 mb-8">
-              <v-btn v-on:click="download()">Download CSV</v-btn>
+              <v-btn v-on:click="download()"
+                >Download CSV<v-icon right>file_download</v-icon></v-btn
+              >
             </div>
             <div style="font-size: 12px" class="text-right mb-2 mx-5">
               <span>Total items: </span>
