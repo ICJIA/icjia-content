@@ -6,8 +6,8 @@
         <v-col>
           <div class="text-center mt-10">
             <h1>ICJIA Agency Content</h1>
-            <p>
-              Please note: The ICJIA agency content listing does not include the
+            <p style="color: #222; font-weight: 900">
+              Please note: This content listing does not include the
               <router-link to="/publications"
                 >publications list items</router-link
               >
@@ -18,11 +18,11 @@
             </p>
           </div>
           <div v-if="content">
-            <div class="text-center mt-5 mb-8">
-              <v-btn v-on:click="download()"
+            <div class="text-center mb-10 mt-10">
+              <v-btn x-large dark class="blue darken-4" v-on:click="download()"
                 >Download CSV<v-icon right>file_download</v-icon></v-btn
               >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <v-btn v-on:click="downloadJSON()"
+              <v-btn x-large v-on:click="downloadJSON()"
                 >Download JSON<v-icon right>file_download</v-icon></v-btn
               >
             </div>
