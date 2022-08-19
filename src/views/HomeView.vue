@@ -145,6 +145,9 @@ export default {
     },
     download() {
       const items = this.content;
+      items.forEach((object) => {
+        delete object["readableDate"];
+      });
       const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
       const header = Object.keys(items[0]);
       const csv = [
@@ -309,6 +312,8 @@ export default {
                   .format(readableDateFormat);
                 break;
             }
+
+            delete obj.id;
 
             allContent.push(obj);
             // this.content = item;
