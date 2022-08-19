@@ -1,5 +1,5 @@
 <template>
-  <h1>Hub Content here</h1>
+  <h1>Hub Content Listing here</h1>
 </template>
 
 <script>

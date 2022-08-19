@@ -147,10 +147,10 @@ export default {
             .join(",")
         ),
       ].join("\r\n");
-
+      let now = window.dayjs().format("YYYY-MM-DD-HH-mm-ss");
       try {
         let blob = new Blob([csv], { type: "text/plain;charset=utf-8" });
-        FileSaver.saveAs(blob, "ICJIAWebContent.csv");
+        FileSaver.saveAs(blob, "ICJIAWebContent-" + now + ".csv");
         console.log("csv saved");
       } catch (e) {
         console.log("csv error");
@@ -177,6 +177,7 @@ export default {
         let sections = Object.keys(ApolloQueryResult.data);
 
         let allContent = [];
+        let readableDateFormat = "YYYY-MM-DD HH:mm:ssa";
         sections.forEach((section) => {
           //console.log(section);
           ApolloQueryResult.data[section].forEach((item) => {
@@ -189,7 +190,7 @@ export default {
                 obj.fullPath = "https://icjia.illinois.gov/news/" + item.slug;
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
 
                 break;
               case "pages":
@@ -202,7 +203,7 @@ export default {
                   item.slug;
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
 
               case "biographies":
@@ -215,7 +216,7 @@ export default {
                   item.slug;
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
               case "jobs":
                 obj.uuid = uuidv4();
@@ -226,7 +227,7 @@ export default {
                   item.slug;
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 obj.contentType = "jobs";
                 break;
               case "meetings":
@@ -238,7 +239,7 @@ export default {
                   item.slug;
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 obj.contentType = "meetings";
                 break;
               case "grants":
@@ -251,7 +252,7 @@ export default {
                 obj.contentType = "grants";
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
               case "events":
                 obj.uuid = uuidv4();
@@ -260,16 +261,19 @@ export default {
                 obj.contentType = "events";
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
               case "units":
                 obj.uuid = uuidv4();
                 obj.fullPath =
-                  "https://icjia.illinois.gov/" + "units" + "/" + item.slug;
+                  "https://icjia.illinois.gov/" +
+                  "about/units" +
+                  "/" +
+                  item.slug;
                 obj.contentType = "units";
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
               case "programs":
                 obj.uuid = uuidv4();
@@ -281,7 +285,7 @@ export default {
                 obj.contentType = "programs";
                 obj.readableDate = window
                   .dayjs(item.updated_at)
-                  .format("YYYY-MM-DD HH:mm:ssa");
+                  .format(readableDateFormat);
                 break;
             }
 

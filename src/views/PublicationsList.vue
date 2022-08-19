@@ -1,5 +1,5 @@
 <template>
-  <h1>Publications List here</h1>
+  <h1>Publications Listing here</h1>
 </template>
 
 <script>
