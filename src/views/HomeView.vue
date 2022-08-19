@@ -80,6 +80,16 @@
                     }}</a>
                   </div>
                 </template>
+                <template v-slot:item.backendURL="{ item }">
+                  <!-- <div style="font-size: 14px; color: #555">
+                    <a target="_blank" :href="item.backendURL">{{
+                      item.backendURL
+                    }}</a>
+                  </div> -->
+                  <v-btn text :href="item.backendURL" target="_blank"
+                    ><v-icon>open_in_new</v-icon></v-btn
+                  >
+                </template>
               </v-data-table>
             </v-card>
           </div>
@@ -135,6 +145,7 @@ export default {
           value: "title",
         },
         { text: "URL", value: "fullPath" },
+        { text: "Admin URL", value: "backendURL" },
       ],
     };
   },
@@ -207,8 +218,12 @@ export default {
           ApolloQueryResult.data[section].forEach((item) => {
             let obj = item;
             // write a switch statement for sections
+
             switch (section) {
               case "posts":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::post.post/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.contentType = "posts";
                 obj.fullPath = "https://icjia.illinois.gov/news/" + item.slug;
@@ -218,6 +233,9 @@ export default {
 
                 break;
               case "pages":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::page.page/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.contentType = "pages";
                 obj.fullPath =
@@ -231,6 +249,9 @@ export default {
                 break;
 
               case "biographies":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::biography.biography/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.contentType = "biographies";
                 obj.fullPath =
@@ -241,8 +262,12 @@ export default {
                 obj.readableDate = window
                   .dayjs(item.updated_at)
                   .format(readableDateFormat);
+                obj.title = obj.affiliation.toUpperCase() + ": " + obj.title;
                 break;
               case "jobs":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::job.job/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
@@ -255,6 +280,9 @@ export default {
                 obj.contentType = "jobs";
                 break;
               case "meetings":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::meeting.meeting/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
@@ -267,6 +295,9 @@ export default {
                 obj.contentType = "meetings";
                 break;
               case "grants":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::grant.grant/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
@@ -279,6 +310,9 @@ export default {
                   .format(readableDateFormat);
                 break;
               case "events":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::event.event/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" + "events" + "/" + item.slug;
@@ -288,6 +322,9 @@ export default {
                   .format(readableDateFormat);
                 break;
               case "units":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::unit.unit/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
@@ -300,6 +337,9 @@ export default {
                   .format(readableDateFormat);
                 break;
               case "programs":
+                obj.backendURL =
+                  "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::program.program/" +
+                  obj.id;
                 obj.uuid = uuidv4();
                 obj.fullPath =
                   "https://icjia.illinois.gov/" +
@@ -313,7 +353,7 @@ export default {
                 break;
             }
 
-            delete obj.id;
+            // delete obj.id;
 
             allContent.push(obj);
             // this.content = item;

@@ -23,6 +23,7 @@ const GET_CONTENT_QUERY = gql`
     biographies(sort: "updated_at:desc") {
       id
       slug
+      affiliation
       title: fullName
       created_at
       updated_at
@@ -48,6 +49,14 @@ const GET_CONTENT_QUERY = gql`
       id
       slug
       title
+      created_at
+      updated_at
+      published_at
+    }
+    events(sort: "updated_at:desc") {
+      id
+      slug
+      title: name
       created_at
       updated_at
       published_at
