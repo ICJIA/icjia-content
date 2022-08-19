@@ -7,8 +7,11 @@
           <div class="text-center mt-10">
             <h1>ICJIA Agency Content</h1>
             <p>
-              Please note: This content listing does not include the
-              publications list items or the
+              Please note: The ICJIA agency content listing does not include the
+              <router-link to="/publications"
+                >publications list items</router-link
+              >
+              or the
               <router-link to="/hub/"
                 >research Hub articles, apps, and datasets.</router-link
               >
