@@ -53,7 +53,7 @@
                 :footer-props="{
                   'items-per-page-options': [100, 150, 200, 250, 500],
                 }"
-                :items-per-page="500"
+                :items-per-page="200"
                 id="contentTable"
               >
                 <template v-slot:item.readableDate="{ item }">
@@ -68,9 +68,55 @@
                     {{ item.readableDate }}
                   </div>
                 </template>
+                <template v-slot:item.contentType="{ item }">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 400;
+                      width: 210px;
+                      color: #555;
+                      text-transform: uppercase;
+                    "
+                  >
+                    {{ item.contentType }}
+                  </div>
+                </template>
+
+                <!-- <template v-slot:item.updated_at="{ item }">
+                  <span v-if="isItNew(item)">
+                    <v-chip
+                      v-if="isItNew(item)"
+                      label
+                      x-small
+                      color="#0D4474"
+                      class="mr-2"
+                      style="margin-top: 0px"
+                    >
+                      <span style="color: #fff !important; font-weight: 400">
+                        RECENTLY UPDATED
+                      </span>
+                    </v-chip></span
+                  >
+                </template> -->
                 <template v-slot:item.title="{ item }">
                   <div style="font-size: 14px; font-weight: 700; color: #555">
-                    {{ item.title }}
+                    <!-- <span v-if="isItNew(item)">
+                      <v-chip
+                        v-if="isItNew(item)"
+                        label
+                        x-small
+                        color="#0D4474"
+                        class="mr-2"
+                        style="margin-top: 0px"
+                      >
+                        <span style="color: #fff !important; font-weight: 400">
+                          UPDATED!
+                        </span>
+                      </v-chip></span
+                    > -->
+                    <span v-if="item.affiliation"
+                      >{{ item.affiliation.toUpperCase() }}: </span
+                    >{{ item.title }}
                   </div>
                 </template>
                 <template v-slot:item.fullPath="{ item }">
@@ -122,6 +168,7 @@ import { v4 as uuidv4 } from "uuid";
 import { GET_CONTENT_QUERY } from "@/graphql/content";
 let FileSaver = require("file-saver");
 import _ from "lodash";
+import moment from "moment";
 // eslint-disable-next-line no-unused-vars
 import { EventBus } from "@/event-bus";
 export default {
@@ -136,6 +183,7 @@ export default {
       content: null,
       search: "",
       headers: [
+        // { text: "", value: "updated_at" },
         { text: "Updated", value: "readableDate" },
         { text: "Type", value: "contentType" },
         {
@@ -145,11 +193,28 @@ export default {
           value: "title",
         },
         { text: "URL", value: "fullPath" },
-        { text: "Admin URL", value: "backendURL" },
+        { text: "Admin", value: "backendURL" },
       ],
     };
   },
   methods: {
+    isItNew(item) {
+      let targetDate;
+      if (item.publicationDate) {
+        targetDate = item.publicationDate;
+      } else {
+        targetDate = item.updated_at;
+      }
+      const now = moment(new Date());
+      const end = moment(targetDate);
+      const duration = moment.duration(now.diff(end));
+      const days = duration.asDays();
+      if (days <= 5) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     generateKey() {
       let key = uuidv4();
       console.log(key);
@@ -199,7 +264,7 @@ export default {
     posts: {
       prefetch: true,
       query: GET_CONTENT_QUERY,
-
+      // fetchPolicy: "no-cache",
       variables() {
         return {};
       },
@@ -262,7 +327,7 @@ export default {
                 obj.readableDate = window
                   .dayjs(item.updated_at)
                   .format(readableDateFormat);
-                obj.title = obj.affiliation.toUpperCase() + ": " + obj.title;
+
                 break;
               case "jobs":
                 obj.backendURL =
