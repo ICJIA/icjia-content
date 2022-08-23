@@ -3,15 +3,28 @@
     <v-app-bar app color="grey lighten-3">
       <div class="d-flex align-center">
         <v-img
+          @click="
+            $router.push('/').catch((err) => {
+              $vuetify.goTo(0);
+            })
+          "
           alt="Vuetify Logo"
-          class="shrink mr-5"
+          class="pointer shrink mr-5"
           contain
           src="https://icjia.illinois.gov/icjia-logo.png"
           transition="scale-transition"
           width="70"
         />
 
-        <div style="font-size: 28px; color: #000; font-weight: 700">
+        <div
+          style="font-size: 28px; color: #000; font-weight: 700"
+          class="pointer"
+          @click="
+            $router.push('/').catch((err) => {
+              $vuetify.goTo(0);
+            })
+          "
+        >
           ICJIA Web Content
         </div>
       </div>
@@ -46,3 +59,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+.pointer {
+  cursor: pointer;
+}
+</style>
