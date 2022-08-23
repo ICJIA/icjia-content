@@ -65,11 +65,23 @@
                     style="
                       font-size: 14px;
                       font-weight: 400;
-                      width: 210px;
+                      width: 150px;
                       color: #555;
                     "
                   >
                     {{ item.readableDate }}
+                  </div>
+                </template>
+                <template v-slot:item.publicationDate="{ item }">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 400;
+                      width: 150px;
+                      color: #555;
+                    "
+                  >
+                    {{ item.publicationDate }}
                   </div>
                 </template>
                 <template v-slot:item.fullPath="{ item }">
@@ -84,7 +96,7 @@
                     style="
                       font-size: 14px;
                       font-weight: 400;
-                      width: 200px;
+                      width: 130px;
                       color: #555;
                     "
                   >
@@ -162,7 +174,7 @@ export default {
   },
   data() {
     return {
-      sortBy: "readableDate",
+      sortBy: "publicationDate",
       sortDesc: true,
       page: 1,
       expanded: [],
@@ -172,7 +184,9 @@ export default {
       // getPublicationType,
       tableLoading: true,
       headers: [
-        { text: "Updated", value: "readableDate" },
+        // { text: "Updated", value: "readableDate" },
+        { text: "Publication Date", value: "publicationDate" },
+        { text: "Last Updated", value: "readableDate" },
         // {
         //   text: "Published",
         //   align: "start",
@@ -330,7 +344,11 @@ export default {
         };
         return obj;
       });
-      this.publications = _.orderBy(publications, ["updated_at"], ["desc"]);
+      this.publications = _.orderBy(
+        publications,
+        ["publicationDate"],
+        ["desc"]
+      );
       this.$myApp.publications = this.publications;
       window.NProgress.done();
     },
