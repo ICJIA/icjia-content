@@ -18,8 +18,9 @@
 
       <v-spacer></v-spacer>
       <v-btn exact to="/" text large>Agency Content</v-btn>
-      <v-btn exact to="/hub/" text large>Hub Content</v-btn>
       <v-btn exact to="/publications/" text large>Publications List</v-btn>
+      <v-btn exact to="/hub/" text large>Hub Content</v-btn>
+
       <v-btn
         exact
         href="https://github.com/ICJIA/icjia-content"

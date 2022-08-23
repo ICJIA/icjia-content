@@ -10,6 +10,16 @@ import nprogress from "nprogress";
 Vue.config.productionTip = false;
 nprogress.start();
 
+import { myApp } from "./services/AppInit";
+myApp.install = function () {
+  Object.defineProperty(Vue.prototype, "$myApp", {
+    get() {
+      return myApp;
+    },
+  });
+};
+Vue.use(myApp);
+console.log("App initialized.");
 new Vue({
   router,
   store,

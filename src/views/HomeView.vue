@@ -73,7 +73,7 @@
                     style="
                       font-size: 14px;
                       font-weight: 400;
-                      width: 210px;
+                      width: 120px;
                       color: #555;
                       text-transform: uppercase;
                     "
@@ -426,7 +426,7 @@ export default {
         });
         //console.log(allContent);
         this.content = _.orderBy(allContent, ["updated_at"], ["desc"]);
-
+        // this.$myApp.agencyContent = this.content;
         NProgress.done();
       },
     },
