@@ -8,7 +8,7 @@
             <h1>ICJIA Publication List</h1>
             <p style="color: #222; font-weight: 900">
               Please note: This listing does not include the
-              <router-link to="/">agency content</router-link>
+              <router-link to="/">general agency content</router-link>
               or the
               <router-link to="/hub/"
                 >research Hub articles, apps, and datasets.</router-link
@@ -29,6 +29,10 @@
               <v-btn x-large v-on:click="downloadJSON()"
                 >Download JSON<v-icon right>file_download</v-icon></v-btn
               >
+            </div>
+            <div style="font-size: 12px" class="text-right mb-2 mx-5">
+              <span>Total items: </span>
+              <span style="font-weight: 900">{{ publications.length }}</span>
             </div>
             <v-card class="elevation-5">
               <v-card-title class="elevation-5">
@@ -53,7 +57,7 @@
                 :footer-props="{
                   'items-per-page-options': [100, 150, 200, 250, 500],
                 }"
-                :items-per-page="200"
+                :items-per-page="100"
                 id="contentTable"
               >
                 <template v-slot:item.readableDate="{ item }">
@@ -106,6 +110,16 @@
                     {{ item.title }}
                   </div>
                 </template>
+                <template v-slot:item.backendURL="{ item }">
+                  <!-- <div style="font-size: 14px; color: #555">
+                    <a target="_blank" :href="item.backendURL">{{
+                      item.backendURL
+                    }}</a>
+                  </div> -->
+                  <v-btn text :href="item.backendURL" target="_blank"
+                    ><v-icon>open_in_new</v-icon></v-btn
+                  >
+                </template>
               </v-data-table>
             </v-card>
           </v-col></v-container
@@ -133,6 +147,9 @@
 <script>
 // import { getPublicationType } from "@/lib/utils";
 // import { EventBus } from "@/event-bus";
+import { v4 as uuidv4 } from "uuid";
+
+let FileSaver = require("file-saver");
 import _ from "lodash";
 // import moment from "moment";
 import axios from "axios";
@@ -172,6 +189,7 @@ export default {
           align: "start",
           value: "fullPath",
         },
+        { text: "Admin", value: "backendURL" },
 
         // {
         //   text: "Article",
@@ -218,6 +236,50 @@ export default {
     //   //console.log(analyticsURL);
     //   window.plausible("file_download", { props: { url: analyticsURL } });
     // },
+    generateKey() {
+      let key = uuidv4();
+      console.log(key);
+    },
+    download() {
+      const items = this.publications;
+      items.forEach((object) => {
+        delete object["readableDate"];
+      });
+      const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
+      const header = Object.keys(items[0]);
+      const csv = [
+        header.join(","), // header row first
+        ...items.map((row) =>
+          header
+            .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+            .join(",")
+        ),
+      ].join("\r\n");
+      let now = window.dayjs().format("YYYY-MM-DD-HH-mm-ss");
+      try {
+        let blob = new Blob([csv], { type: "text/plain;charset=utf-8" });
+        FileSaver.saveAs(blob, "ICJIAWebPublications-" + now + ".csv");
+        console.log("csv saved");
+      } catch (e) {
+        console.log("csv error");
+      }
+
+      //console.log(csv);
+      //download csv file
+    },
+    downloadJSON() {
+      let now = window.dayjs().format("YYYY-MM-DD_HH-mm-ss");
+      try {
+        let json = JSON.stringify(this.publications);
+        let blob = new Blob([json], {
+          type: "text/plain;charset=utf-8",
+        });
+        FileSaver.saveAs(blob, "ICJIAWebPublications-" + now + ".json");
+        console.log("json saved");
+      } catch (e) {
+        console.log("json error");
+      }
+    },
     async fetchPublications() {
       if (this.$myApp.publications && this.$myApp.publications.length) {
         this.publications = this.$myApp.publications;
@@ -247,6 +309,8 @@ export default {
       pubArray = _.uniqBy(pubArray, "id");
 
       let publications = pubArray.map((p) => {
+        delete p.tags;
+        delete p.searchMeta;
         let obj = {
           ...p,
           readableDate: window
@@ -260,6 +324,9 @@ export default {
               : null,
           //fullPath: `/about/publications/${p.slug}`,
           contentType: "publication",
+          backendURL:
+            "https://agency.icjia-api.cloud/admin/plugins/content-manager/collectionType/application::publication.publication/" +
+            p.id,
         };
         return obj;
       });

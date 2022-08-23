@@ -75,7 +75,6 @@
                       font-weight: 400;
                       width: 120px;
                       color: #555;
-                      text-transform: uppercase;
                     "
                   >
                     {{ item.contentType }}
@@ -243,7 +242,7 @@ export default {
         console.log("csv error");
       }
 
-      console.log(csv);
+      // console.log(csv);
       //download csv file
     },
     downloadJSON() {

@@ -12,7 +12,7 @@
         />
 
         <div style="font-size: 28px; color: #000; font-weight: 700">
-          Web Content Status
+          ICJIA Web Content
         </div>
       </div>
 
